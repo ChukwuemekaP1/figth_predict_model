@@ -1,60 +1,71 @@
-# Flight Delay Predictor
+# Flight Delay Prediction API
 
-A robust machine learning web application for predicting flight delays, featuring both FastAPI and Streamlit interfaces.
-
-## Features
-- **FastAPI Backend**: RESTful API for flight delay prediction
-- **Streamlit Frontend**: Interactive web UI for real-time predictions
-- **Pre-trained Model**: Uses a scikit-learn pipeline trained on flight data
-- **Docker Ready**: Easily deployable with Docker
+A machine learning web application that predicts flight delays with **two frontend options**: FastAPI with HTML templates and Streamlit.
 
 ## Project Structure
+
 ```
 Flight_Delay_Predictor/
-├── main.py                 # FastAPI application
-├── api.py                  # Streamlit frontend
+├── main.py                 # FastAPI application with HTML frontend
+├── api.py                  # Streamlit application
 ├── model/                  # Trained ML models
 │   ├── flight_delay_model.pkl
 │   └── model_columns.pkl
-├── requirements.txt        # Python dependencies
-├── start_server.bat        # Windows batch script for FastAPI
-├── test_api.py             # API test script
 ├── templates/              # HTML templates for FastAPI
-│   └── index.html
-└── venv/                   # Python virtual environment
+│   └── index.html         # FastAPI frontend interface
+├── venv/                   # Virtual environment
+├── requirements.txt        # Python dependencies
+├── start_fastapi.bat      # FastAPI startup script
+├── start_streamlit.bat    # Streamlit startup script
+└── test_api.py            # Test script
 ```
 
-## Quick Start
+## Setup
 
-### 1. Local Setup
+1. **Virtual environment is already created and activated**
+2. **Dependencies are already installed**
 
-#### Activate Virtual Environment
-```bash
-venv\Scripts\activate
-```
+## Running the Application
 
-#### Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+### Option 1: FastAPI Frontend (HTML/JavaScript)
+1. **Start the FastAPI server:**
+   ```bash
+   start_fastapi.bat
+   ```
+   Or manually:
+   ```bash
+   venv\Scripts\activate
+   uvicorn main:app --reload
+   ```
 
-#### Run FastAPI Backend
-```bash
-uvicorn main:app --reload
-```
-- API Docs: http://localhost:8000/docs
-- Redoc: http://localhost:8000/redoc
+2. **Access the application:**
+   - Web Interface: http://localhost:8000
+   - API Documentation: http://localhost:8000/docs
+   - Alternative API Docs: http://localhost:8000/redoc
 
-#### Run Streamlit Frontend
-```bash
-streamlit run api.py
-```
-- UI: http://localhost:8501/
+### Option 2: Streamlit Frontend (Python-based UI)
+1. **Start the Streamlit app:**
+   ```bash
+   start_streamlit.bat
+   ```
+   Or manually:
+   ```bash
+   venv\Scripts\activate
+   streamlit run api.py
+   ```
 
-### 2. API Usage
+2. **Access the application:**
+   - Streamlit Interface: http://localhost:8501
 
-#### POST /predict
-Send a JSON payload to `/predict`:
+## API Endpoints (FastAPI)
+
+### GET /
+Serves the HTML frontend interface for making predictions.
+
+### POST /predict
+Makes a flight delay prediction.
+
+**Request Body:**
 ```json
 {
   "month": 1,
@@ -68,7 +79,8 @@ Send a JSON payload to `/predict`:
   "distance": 337.0
 }
 ```
-Response:
+
+**Response:**
 ```json
 {
   "prediction": 0,
@@ -78,44 +90,40 @@ Response:
 }
 ```
 
-### 3. Docker Deployment
+## Features
 
-#### Build the Docker Image
-```bash
-docker build -t flight-delay-api .
-```
+### FastAPI Frontend
+- **Web Interface**: Clean HTML form with real-time predictions
+- **REST API**: JSON-based API for programmatic access
+- **Interactive Documentation**: Auto-generated API docs with Swagger UI
+- **Responsive Design**: Works on desktop and mobile devices
 
-#### Run the Container
-```bash
-docker run -d -p 8000:8000 flight-delay-api
-```
+### Streamlit Frontend
+- **Interactive UI**: Python-based web interface with sliders and inputs
+- **Real-time Feedback**: Instant predictions with confidence metrics
+- **Visual Elements**: Progress bars and colored result displays
+- **Form Validation**: Built-in input validation and error handling
 
-#### Access the API
-- FastAPI: http://localhost:8000
-- Docs: http://localhost:8000/docs
+## Model Information
 
-## How It Works
-- **Model Loading**: Loads pre-trained model and columns from `model/`
-- **Prediction**: Accepts flight details, returns delay prediction and confidence
-- **Streamlit UI**: User-friendly form for manual predictions
-- **FastAPI**: REST endpoint for programmatic access
-
-## Requirements
-```
-fastapi>=0.100.0
-uvicorn>=0.20.0
-pandas>=2.0.0
-scikit-learn>=1.3.0
-jinja2>=3.1.0
-python-multipart>=0.0.6
-streamlit>=1.51.0
-```
+The model uses the following features:
+- Month (1-12)
+- Day of Month (1-31)
+- Day of Week (1-7)
+- Carrier Code (e.g., WN, DL, AA)
+- Origin Airport (e.g., LAX)
+- Destination Airport (e.g., SFO)
+- Scheduled Departure Time (HHMM format)
+- Departure Delay (minutes, negative for early)
+- Distance (miles)
 
 ## Testing
-Run the included test script:
+
+Run the test script to verify the setup:
 ```bash
 python test_api.py
 ```
 
-## License
-MIT
+## Repository
+
+This project is available at: https://github.com/ChukwuemekaP1/figth_predict_model.git
